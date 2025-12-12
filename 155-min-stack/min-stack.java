@@ -1,26 +1,46 @@
 class MinStack {
 
-    Stack<int[]> stack; // each element: [value, minAtThisPoint]
+    Stack<Long> stack; // each element: [value, minAtThisPoint]
+    long min;
 
     public MinStack() {
         stack = new Stack<>();
     }
     
     public void push(int val) {
-        int min = stack.isEmpty() ? val : Math.min(val, stack.peek()[1]);
-        stack.push(new int[]{val, min});
+        long v = val;
+        if(stack.isEmpty()){
+            stack.push(v);
+            min = val;
+        }
+        else if(min>v){
+            stack.push(2*v - min); // encode
+            min = v;
+        }
+        else{
+            stack.push(v);
+        }
     }
     
     public void pop() {
-        stack.pop();
+        long x = stack.pop();
+
+        if(x < min){ //That means value has been modified
+            //So we need to revert the min value to its prev one 
+            min = 2*min - x;
+        }
     }
     
     public int top() {
-        return stack.peek()[0];
+        long x = stack.peek();
+        if(x < min){
+            return (int)min;
+        }
+        return (int)x;
     }
     
     public int getMin() {
-        return stack.peek()[1];
+        return (int)min;
     }
 }
 
