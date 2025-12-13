@@ -1,31 +1,37 @@
 class MyQueue {
-    //Time Complexity of Removal: O(1) 
-    Stack<Integer> stack1 = new Stack<>();
-    Stack<Integer> stack2 = new Stack<>();
+    //Optimal Approach (Amortized O(1))
+    Stack<Integer> inStack;
+    Stack<Integer> outStack;
 
     public MyQueue() {
+        inStack = new Stack<>();
+        outStack = new Stack<>();
     }
     
     public void push(int x) {
-        while(!stack1.isEmpty()){
-            stack2.push(stack1.pop());
-        }
-        stack1.push(x);
-        while(!stack2.isEmpty()){
-            stack1.push(stack2.pop());
-        }
+        inStack.push(x);
     }
     
     public int pop() {
-        return stack1.pop();
+        if(outStack.isEmpty()){
+            while(!inStack.isEmpty()){
+                outStack.push(inStack.pop());
+            }
+        }
+        return outStack.pop();
     }
     
     public int peek() {
-        return stack1.peek();
+        if(outStack.isEmpty()){
+            while(!inStack.isEmpty()){
+                outStack.push(inStack.pop());
+            }
+        }
+        return outStack.peek();
     }
     
     public boolean empty() {
-        return stack1.isEmpty();
+        return inStack.isEmpty() && outStack.isEmpty();
     }
 }
 
