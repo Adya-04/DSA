@@ -1,5 +1,5 @@
 class MyQueue {
-    //Time Complexity of Removal: O(n) 
+    //Time Complexity of Removal: O(1) 
     Stack<Integer> stack1 = new Stack<>();
     Stack<Integer> stack2 = new Stack<>();
 
@@ -7,30 +7,21 @@ class MyQueue {
     }
     
     public void push(int x) {
+        while(!stack1.isEmpty()){
+            stack2.push(stack1.pop());
+        }
         stack1.push(x);
+        while(!stack2.isEmpty()){
+            stack1.push(stack2.pop());
+        }
     }
     
     public int pop() {
-        while(!stack1.isEmpty()){
-            stack2.push(stack1.pop());
-        }
-        int removed = stack2.pop();
-
-        while(!stack2.isEmpty()){
-            stack1.push(stack2.pop());
-        }
-        return removed;
+        return stack1.pop();
     }
     
     public int peek() {
-        while(!stack1.isEmpty()){
-            stack2.push(stack1.pop());
-        }
-        int front = stack2.peek();
-        while(!stack2.isEmpty()){
-            stack1.push(stack2.pop());
-        }
-        return front;
+        return stack1.peek();
     }
     
     public boolean empty() {
