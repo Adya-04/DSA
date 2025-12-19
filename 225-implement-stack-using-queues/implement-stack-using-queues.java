@@ -1,27 +1,53 @@
 class MyStack {
-    Queue<Integer> queue;
+    Queue<Integer> queue1;
+    Queue<Integer> queue2;
 
     public MyStack() {
-        queue = new LinkedList<>();
+        queue1 = new LinkedList<>();
+        queue2 = new LinkedList<>();
     }
     
     public void push(int x) { //TC = O(n)
-        queue.add(x);
-        for(int i=1; i< queue.size(); i++){
-            queue.add(queue.remove());
-        }
+        queue1.add(x);
     }
     
     public int pop() {
-        return queue.remove();  
+        int n = queue1.size();
+        for(int i = 0; i<n-1; i++){
+            queue2.add(queue1.remove());
+        }
+        int ans = queue1.remove();  
+        
+        Queue<Integer> temp = queue1;
+        queue1 = queue2;
+        queue2 = temp;
+
+        return ans;
     }
     
     public int top() {
-        return queue.peek();
+        int n = queue1.size();
+
+        // Move n-1 elements
+        for (int i = 0; i < n - 1; i++) {
+            queue2.add(queue1.remove());
+        }
+
+        int topElement = queue1.peek();
+
+        // Move top element also
+        queue2.add(queue1.remove());
+
+        // Swap queues
+        Queue<Integer> temp = queue1;
+        queue1 = queue2;
+        queue2 = temp;
+
+        return topElement;
     }
     
     public boolean empty() {
-        return queue.isEmpty();
+        return queue1.isEmpty();
     }
 }
 
