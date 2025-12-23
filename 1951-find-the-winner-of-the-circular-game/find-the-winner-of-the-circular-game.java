@@ -1,51 +1,20 @@
 class Solution {
-
-    //Time: O(n × k)
-    // Space: O(n) (linked list)
-
-    class Node {
-        int val;
-        Node next;
-
-        Node(int val) {
-            this.val = val;
-        }
-    }
-
-    void deleteNode(Node prev, Node curr) {
-        prev.next = curr.next;
-    }
-
+    //T.C : O(n*k)
+    //S.C : O(n)
     public int findTheWinner(int n, int k) {
+        Queue<Integer> q = new LinkedList<>();
 
-        // Step 1: Create circular linked list
-        Node head = new Node(1);
-        Node tail = head;
-
-        for (int i = 2; i <= n; i++) {
-            tail.next = new Node(i);
-            tail = tail.next;
+        for (int i = 1; i <= n; i++) {
+            q.add(i);
         }
-        tail.next = head; // make it circular
-
-        // Step 2: Initialize pointers
-        Node curr = head;
-        Node prev = tail; // IMPORTANT: prev starts at last node
-
-        // Step 3: Eliminate until one node remains
-        while (curr.next != curr) {
-
-            // move k-1 steps
-            for (int i = 1; i < k; i++) {
-                prev = curr;
-                curr = curr.next;
+        
+        while(q.size() > 1){
+            for (int count = 1; count <= k - 1; count++) {
+                q.add(q.poll());
             }
-
-            // delete k-th node
-            deleteNode(prev, curr);
-            curr = prev.next;
+            q.poll();
         }
 
-        return curr.val; // winner
+        return q.peek();
     }
 }
