@@ -1,20 +1,14 @@
 class Solution {
-    //T.C : O(n*k)
-    //S.C : O(n)
+    
+    private int findWinnerIdx(int n, int k){
+        if(n == 1) return 0;
+        int idx = findWinnerIdx(n-1, k);
+        idx = (idx+k) % n;
+        return idx;
+    }
+
     public int findTheWinner(int n, int k) {
-        Queue<Integer> q = new LinkedList<>();
-
-        for (int i = 1; i <= n; i++) {
-            q.add(i);
-        }
-        
-        while(q.size() > 1){
-            for (int count = 1; count <= k - 1; count++) {
-                q.add(q.poll());
-            }
-            q.poll();
-        }
-
-        return q.peek();
+        int resultIdx = findWinnerIdx(n,k);
+        return resultIdx + 1;
     }
 }
