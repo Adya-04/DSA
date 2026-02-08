@@ -1,21 +1,23 @@
+//Coded myself
 class Solution {
     public int minRemoval(int[] nums, int k) {
-        int n = nums.length;
-        Arrays.sort(nums);
+        Arrays.sort(nums);         
+        int n = nums.length;    
 
-        int i = 0;
+        int l = 0, r = 0;
         int maxLen = 1;
 
-        for (int j = 0; j < n; j++) {
-            long maxEl = nums[j];
-            long minEl = nums[i];
+        while (r < n) {
 
-            while (i < j && maxEl > (long) k * minEl) {
-                i++;
-                minEl = nums[i];
+            int max = nums[r];
+            int min = nums[l];
+
+            if ((long) max <= (long) k * min) {  
+                maxLen = Math.max(maxLen, r - l + 1);
+                r++;
+            } else {
+                l++;
             }
-
-            maxLen = Math.max(maxLen, j - i + 1);
         }
 
         return n - maxLen;
