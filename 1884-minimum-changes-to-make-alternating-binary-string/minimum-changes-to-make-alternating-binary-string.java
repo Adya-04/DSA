@@ -1,29 +1,23 @@
-class Solution {
+//Approach-2 (No need to calculate both)
+//T.C : O(n)
+//S.C : O(1)
+public class Solution {
     public int minOperations(String s) {
         int n = s.length();
-        int start_with_0 = 0; //010101 //even idx = 0 //odd idx = 1
-        int start_with_1 = 0; //1010101
+        int start_with_0 = 0;
 
-        for(int i=0; i<n; i++){
-            if(i%2==0){//Even index
-                if(s.charAt(i) == '1'){
+        for (int i = 0; i < n; i++) {
+            if (i % 2 == 0) {
+                if (s.charAt(i) == '1') {
                     start_with_0++;
                 }
-                else{
-                    start_with_1++;
-                }
-            }
-            else {
-                //Odd index
-                if(s.charAt(i) == '0'){
+            } else {
+                if (s.charAt(i) == '0') {
                     start_with_0++;
-                }
-                else{
-                    start_with_1++;
                 }
             }
         }
 
-        return Math.min(start_with_0, start_with_1);
+        return Math.min(start_with_0, n - start_with_0);
     }
 }
