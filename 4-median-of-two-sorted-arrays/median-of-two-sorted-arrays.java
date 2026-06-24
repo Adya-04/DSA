@@ -2,67 +2,41 @@ class Solution {
     //Better Approach
     // SC = O(1)
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+
+        if(nums1.length > nums2.length){
+            return findMedianSortedArrays(nums2,nums1);
+        }
+
         int m = nums1.length;
         int n = nums2.length;
 
-        int total = m + n;
+        int low = 0, high = m;
 
-        int idx1 = (total / 2) - 1;
-        int element1 = -1;
+        while(low <= high){
+            int Px = low + (high-low)/2;
+            int Py = (m+n+1)/2 - Px;
 
-        int idx2 = (total / 2);
-        int element2 = -1;
+            //left half wle
+            int x1 = (Px == 0) ? Integer.MIN_VALUE : nums1[Px-1];
+            int x2 = (Py == 0) ? Integer.MIN_VALUE : nums2[Py-1];
 
-        int i = 0, j = 0, k = 0;
+            //right side wle 
+            int x3 = (Px == m) ? Integer.MAX_VALUE : nums1[Px];
+            int x4 = (Py == n) ? Integer.MAX_VALUE : nums2[Py];
 
-        while (i < m && j < n) {
-            if (nums1[i] <= nums2[j]) {
-                if (k == idx1) {
-                    element1 = nums1[i];
-                }
-                if (k == idx2) {
-                    element2 = nums1[i];
-                }
-                i++;
-            } else {
-                if (k == idx1) {
-                    element1 = nums2[j];
-                }
-                if (k == idx2) {
-                    element2 = nums2[j];
-                }
-                j++;
+            if(x1<=x4 && x2<=x3){
+                if((m+n)%2 == 1) return Math.max(x1,x2);
+                else return (Math.max(x1,x2) + Math.min(x3,x4)) / 2.0;
             }
 
-            k++;
+            if(x1>x4){
+                //shift leftside 
+                high = Px - 1;
+            }
+            else{
+                low = Px+1;
+            }
         }
-
-        while (i < m) {
-            if (k == idx1) {
-                element1 = nums1[i];
-            }
-            if (k == idx2) {
-                element2 = nums1[i];
-            }
-            i++;
-            k++;
-        }
-
-        while (j < n) {
-            if (k == idx1) {
-                element1 = nums2[j];
-            }
-            if (k == idx2) {
-                element2 = nums2[j];
-            }
-            j++;
-            k++;
-        }
-
-        if (total % 2 == 1) {
-            return element2;
-        } else {
-            return (element1 + element2) / 2.0;
-        }
+        return -1;
     }
 }
