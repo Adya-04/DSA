@@ -1,29 +1,47 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
 class Solution {
     public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        ListNode newLsHead = new ListNode();
+        ListNode currLs = newLsHead;
 
-        ListNode dummy = new ListNode(-1);
-        ListNode current = dummy;
+        ListNode temp1 = list1;
+        ListNode temp2 = list2;
+        while(temp1 != null && temp2 != null){
+            currLs.next = new ListNode();
+            currLs = currLs.next;
 
-        while (list1 != null && list2 != null) {
-
-            if (list1.val <= list2.val) {
-                current.next = list1;
-                list1 = list1.next;
-            } else {
-                current.next = list2;
-                list2 = list2.next;
+            if(temp1.val > temp2.val){
+                currLs.val = temp2.val;
+                temp2 = temp2.next;
             }
-
-            current = current.next;
+            else{
+                currLs.val = temp1.val;
+                temp1 = temp1.next;
+            }
+        }
+        while(temp1 != null){
+            currLs.next = new ListNode();
+            currLs = currLs.next;
+            currLs.val = temp1.val;
+            temp1 = temp1.next;
         }
 
-        // Attach remaining nodes
-        if (list1 != null) {
-            current.next = list1;
-        } else {
-            current.next = list2;
+        while(temp2 != null){
+            currLs.next = new ListNode();
+            currLs = currLs.next;
+            currLs.val = temp2.val;
+            temp2 = temp2.next;
         }
 
-        return dummy.next;
+        return newLsHead.next;
     }
 }
