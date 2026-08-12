@@ -3,29 +3,24 @@ class Solution {
         int n1 = nums1.length;
         int n2 = nums2.length;
 
-        int[] ans = new int[Math.min(n1,n2)];
-        Arrays.sort(nums1);
-        Arrays.sort(nums2);
+        int[] ans = new int[Math.min(n1, n2)];
 
-        int i=0;
-        int j=0;
-        int k =0;
-        while(i<n1 && j<n2){
+        HashMap<Integer, Integer> map = new HashMap<>();
 
-            if(nums1[i] == nums2[j]){
-                ans[k++] = nums1[i];
-                i++;
-                j++;
-            }
+        // store frequencies of nums1 
+        for (int x : nums1) {
+            map.put(x, map.getOrDefault(x, 0) + 1);
+        }
 
-            else if(nums1[i] > nums2[j]){
-                j++;
-            }
+        int k = 0;
 
-            else{
-                i++;
+        // check nums2 
+        for (int x : nums2) {
+            if (map.getOrDefault(x, 0) > 0) {
+                ans[k++] = x;
+                map.put(x, map.get(x) - 1);
             }
         }
-        return Arrays.copyOf(ans,k);
+        return Arrays.copyOf(ans, k);
     }
 }
