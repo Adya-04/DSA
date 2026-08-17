@@ -1,35 +1,38 @@
 class Solution {
 
     List<List<Integer>> result = new ArrayList<>();
-    HashSet<Integer> set = new HashSet<>();
     int n;
 
     public List<List<Integer>> permute(int[] nums) {
         n = nums.length;
 
-        List<Integer> temp = new ArrayList<>();
-        solve(temp,nums);
+        solve(0,nums);
         return result;
     }
 
-    private void solve(List<Integer> temp, int[] nums) {
+    private void solve(int idx, int[] nums) {
 
-        if (temp.size() == nums.length) {
-            result.add(new ArrayList<>(temp));
+        if (idx == n) {
+            List<Integer> temp = new ArrayList<>();
+
+            for(int n: nums){
+                temp.add(n);
+            }
+
+            result.add(temp);
             return;
         }
 
-        for (int i=0; i<nums.length; i++) {
-
-            if (!set.contains(nums[i])) {
-                temp.add(nums[i]);
-                set.add(nums[i]);
-
-                solve(temp, nums);
-
-                set.remove(nums[i]);
-                temp.remove(temp.size() - 1);
-            }
+        for (int i=idx ; i<n; i++) {
+            swap(nums,i, idx); //passing indexes to be swapped
+            solve(idx+1, nums);
+            swap(nums,i,idx);
         }
+    }
+
+    private void swap(int[] nums, int a, int b){
+        int temp = nums[a];
+        nums[a] = nums[b];
+        nums[b] = temp;
     }
 }
