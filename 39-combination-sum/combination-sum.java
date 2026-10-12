@@ -1,46 +1,31 @@
 class Solution {
-    Set<List<Integer>> s = new HashSet<>();
+    //Optimal method
 
-    public List<List<Integer>> combinationSum(int[] candidates, int target) {
-
-        List<List<Integer>> ans = new ArrayList<>();
-        List<Integer> combin = new ArrayList<>();
-
-        getAllCombinations(candidates, 0, target, ans, combin);
-
-        return ans;
-    }
-
-    private void getAllCombinations(
-        int[] arr,
-        int idx,
-        int target, 
-        List<List<Integer>> ans,
-        List<Integer> combin){
-        
-        if(target==0){
-            if(!s.contains(combin)){
-                ans.add(new ArrayList<>(combin));
-                s.add(new ArrayList<>(combin));
+    private void findCombin(int idx, int[] arr, int target, List<List<Integer>> ans, List<Integer> currAns){
+        //Base Condition
+        if(idx == arr.length){
+            if(target==0){
+                ans.add(new ArrayList<>(currAns));
             }
             return;
         }
-        
-        if(idx == arr.length || target<0){
-            return;
+
+        if(arr[idx] <= target){
+            //then only pick 
+            currAns.add(arr[idx]);
+            findCombin(idx,arr,target-arr[idx],ans,currAns);
+            currAns.remove(currAns.size()-1);
         }
 
-        
-        // Include the current element
-        combin.add(arr[idx]);
-        // Single inclusion: move to the next index
-        getAllCombinations(arr, idx+1, target-arr[idx], ans, combin);
-        // Multiple inclusion: stay at the same index
-        getAllCombinations(arr,idx, target-arr[idx], ans, combin);
-        // Backtrack: remove the current element
-        combin.remove(combin.size()-1);
-        //Exclude the current element
-        getAllCombinations(arr,idx+1,target,ans,combin);
-        
+        //Not picking the element
+        findCombin(idx+1,arr,target,ans,currAns);
+    }
+
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> ans = new ArrayList<>();
+
+        findCombin(0,candidates,target,ans,new ArrayList<>());
+
+        return ans;
     }
 }
